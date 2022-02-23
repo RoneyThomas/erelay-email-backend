@@ -6,6 +6,7 @@ const schema = new dynamoose.Schema(
       type: String,
       hashKey: true,
     },
+    cookie: String,
     keys: {
       "type": Set,
       "schema": [String]

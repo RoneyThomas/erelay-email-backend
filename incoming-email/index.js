@@ -1,5 +1,5 @@
 const AWSXRay = require('aws-xray-sdk-core')
-const { EmailsModel } = require('./Models/EmailModels');
+const { EmailsModel } = require('./models/EmailModels');
 
 exports.handler = async function(event, context, callback) {
   // console.log(event)
@@ -26,15 +26,22 @@ exports.handler = async function(event, context, callback) {
     if (exists === undefined) {
       const result = await EmailsModel.create({
         id: id,
+        cookie: "",
         keys: [keys],
         ttl: utc_timestamp
       });
       console.log(result)
     } else {
+      let k
+      if (exists.keys !== undefined) {
+        k = [...exists.keys, keys]
+      } else {
+        k = [keys]
+      }
       const result = await EmailsModel.update({
         id: id
       }, {
-        keys: [...exists.keys, keys],
+        keys: k,
         ttl: utc_timestamp
       });
       console.log(result)
