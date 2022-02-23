@@ -9,8 +9,9 @@ exports.handler = async function(event, context, callback) {
   const buckets = JSON.parse(event["Records"][0]["Sns"]["Message"])["receipt"]["action"]["bucketName"]
   const keys = JSON.parse(event["Records"][0]["Sns"]["Message"])["receipt"]["action"]["objectKey"]
   const id = JSON.parse(event["Records"][0]["Sns"]["Message"])["receipt"]["recipients"][0]
-  var ttl = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
-  ttl.setHours(ttl.getHours() + 1);
+  const now = new Date;
+  const utc_timestamp = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+    now.getUTCHours(), now.getUTCMinutes() + 30, now.getUTCSeconds(), now.getUTCMilliseconds());
 
   console.log(
     {
@@ -26,7 +27,7 @@ exports.handler = async function(event, context, callback) {
       const result = await EmailsModel.create({
         id: id,
         keys: [keys],
-        ttl: ttl
+        ttl: utc_timestamp
       });
       console.log(result)
     } else {
@@ -34,7 +35,7 @@ exports.handler = async function(event, context, callback) {
         id: id
       }, {
         keys: [...exists.keys, keys],
-        ttl: ttl
+        ttl: utc_timestamp
       });
       console.log(result)
     }
