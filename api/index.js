@@ -156,13 +156,21 @@ exports.handler = async (event) => {
       console.log("Delete email being called")
       const emails = await EmailsModel.get({ id: event['queryStringParameters'].email })
       console.log(emails.keys);
+      if (emails.keys.size > 1) {
+        emails.keys.delete(event['queryStringParameters'].key)
+        const result = await EmailsModel.update({
+          id: event['queryStringParameters'].email
+        }, {
+          keys: emails.keys
+        });
+        console.log(result)
+      } else {
+        const result = EmailsModel.update({ "id": event['queryStringParameters'].email }, { "$REMOVE": { "keys": null } });
+        console.log(result)
+      }
       emails.keys.delete(event['queryStringParameters'].key)
       console.log(emails.keys);
-      const result = await EmailsModel.update({
-        id: event['queryStringParameters'].email
-      }, {
-        keys: emails.keys
-      });
-      console.log(result)
+
+
   }
 };
