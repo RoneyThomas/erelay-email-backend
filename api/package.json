@@ -1,0 +1,20 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.1079.0"
+  },
+  "dependencies": {
+    "aws-xray-sdk-core": "^3.3.4",
+    "cookie": "^0.4.2",
+    "dynamoose": "^2.8.5",
+    "mailparser": "^3.4.0"
+  }
+}
