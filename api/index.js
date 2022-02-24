@@ -152,5 +152,17 @@ exports.handler = async (event) => {
           body: JSON.stringify({ "message": 'Bad Request' }),
         }
       }
+    case "DELETE /email":
+      console.log("Delete email being called")
+      const emails = await EmailsModel.get({ id: event['queryStringParameters'].email })
+      console.log(emails.keys);
+      emails.keys.delete(event['queryStringParameters'].key)
+      console.log(emails.keys);
+      const result = await EmailsModel.update({
+        id: event['queryStringParameters'].email
+      }, {
+        keys: emails.keys
+      });
+      console.log(result)
   }
 };
