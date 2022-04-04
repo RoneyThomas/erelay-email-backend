@@ -6,12 +6,6 @@ const generateName = require('./lib/name')
 const { EmailsModel } = require('./models/EmailModels');
 const crypto = require('crypto');
 
-// const generateId = (userId) => {
-//   const hashInput = `${Date.now()}${userId}${Math.floor(Math.random() * 100000)}`
-//   const generatedId = SHA256(hashInput, { outputLength: 32 }).toString()
-//   return generatedId
-// }
-
 exports.handler = async (event) => {
   // TODO implement
   console.log(event)
@@ -154,23 +148,7 @@ exports.handler = async (event) => {
       }
     case "DELETE /email":
       console.log("Delete email being called")
-      const emails = await EmailsModel.get({ id: event['queryStringParameters'].email })
-      console.log(emails.keys);
-      if (emails.keys.size > 1) {
-        emails.keys.delete(event['queryStringParameters'].key)
-        const result = await EmailsModel.update({
-          id: event['queryStringParameters'].email
-        }, {
-          keys: emails.keys
-        });
-        console.log(result)
-      } else {
-        const result = EmailsModel.update({ "id": event['queryStringParameters'].email }, { "$REMOVE": { "keys": null } });
-        console.log(result)
-      }
-      emails.keys.delete(event['queryStringParameters'].key)
-      console.log(emails.keys);
-
-
+      const emails = await EmailsModel.delete({ id: event['queryStringParameters'].email })
+      console.log(emails);
   }
 };
